@@ -25,6 +25,7 @@ server.post('/api/users', (req, res) => {
     res
       .status(400)
       .json({ errorMessage: 'Please provide name and bio for user.' });
+    return;
   }
 
   db.insert(userInfo)
@@ -84,6 +85,7 @@ server.put('/api/users/:id', (req, res) => {
     res.status(400).json({
       errorMessage: 'Please provide name and bio for the user.',
     });
+    return;
   }
 
   db.update(id, user)
