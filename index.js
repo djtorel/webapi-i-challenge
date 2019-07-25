@@ -39,4 +39,19 @@ server.get('/api/users/:id', (req, res) => {
     });
 });
 
+server.delete('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(deleted => {
+      if (deleted) {
+        res.status(204).end();
+      } else {
+        res.status(404).json({ message: `Cannot find userId: ${id}` });
+      }
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
 server.listen(8000, console.log('API running on port 8000'));
