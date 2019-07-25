@@ -80,16 +80,16 @@ server.put('/api/users/:id', (req, res) => {
   const { id } = req.params;
   const user = req.body;
 
+  if (!user.name || !user.bio) {
+    res.status(400).json({
+      errorMessage: 'Please provide name and bio for the user.',
+    });
+  }
+
   db.update(id, user)
     .then(updated => {
       if (updated) {
-        if (!user.name || !user.bio) {
-          res.status(400).json({
-            errorMessage: 'Please provide name and bio for the user.',
-          });
-        } else {
-          res.status(200).json(updated);
-        }
+        res.status(200).json(updated);
       } else {
         res
           .status(404)
