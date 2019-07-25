@@ -19,8 +19,8 @@ server.get('/api/users', (req, res) => {
 
 server.post('/api/users', (req, res) => {
   const userInfo = req.body;
-
   const { name, bio } = userInfo;
+
   if (!name || !bio) {
     res
       .status(400)
