@@ -47,8 +47,9 @@ server.get('/api/users/:id', (req, res) => {
         res
           .status(404)
           .json({ message: 'The user with the specified ID does not exist.' });
+      } else {
+        res.status(200).json(user);
       }
-      res.status(200).json(user);
     })
     .catch(err => {
       res
@@ -65,11 +66,13 @@ server.delete('/api/users/:id', (req, res) => {
       if (deleted) {
         res.status(204).end();
       } else {
-        res.status(404).json({ message: `Cannot find userId: ${id}` });
+        res
+          .status(404)
+          .json({ message: 'The user with the specified ID does not exist.' });
       }
     })
     .catch(err => {
-      res.status(500).json(err);
+      res.status(500).json({ message: 'The user could not be removed' });
     });
 });
 
@@ -80,13 +83,23 @@ server.put('/api/users/:id', (req, res) => {
   db.update(id, user)
     .then(updated => {
       if (updated) {
-        res.status(200).json(updated);
+        if (!user.name || !user.bio) {
+          res.status(400).json({
+            errorMessage: 'Please provide name and bio for the user.',
+          });
+        } else {
+          res.status(200).json(updated);
+        }
       } else {
-        res.status(404).json({ message: `Cannot find userId: ${id}` });
+        res
+          .status(404)
+          .json({ message: 'The user with the specified ID does not exist' });
       }
     })
     .catch(err => {
-      res.status(500).json(err);
+      res
+        .status(500)
+        .json({ error: 'The user information could not be modified.' });
     });
 });
 
