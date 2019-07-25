@@ -11,7 +11,9 @@ server.get('/api/users', (req, res) => {
       res.status(200).json(users);
     })
     .catch(err => {
-      res.status(500).json({ success: false, err });
+      res
+        .status(500)
+        .json({ error: 'There users information could not be retrieved' });
     });
 });
 
@@ -30,9 +32,7 @@ server.post('/api/users', (req, res) => {
       res.status(201).json(user);
     })
     .catch(err => {
-      res
-        .status(500)
-        .json({
+      res.status(500).json({
           error: 'There was an error while saving the user to the database',
         });
     });
